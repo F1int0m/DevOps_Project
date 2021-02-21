@@ -13,7 +13,7 @@ app = Flask(__name__)
 def index():
     return 'Help me'
 
-
+@dispatcher.add_method
 def echo(input):
     return input
 
@@ -28,7 +28,6 @@ def Health():
 
 @app.route('/api/v1/jsonrpc', methods=['GET', 'POST'])
 def application():
-    dispatcher["echo"] = echo
     response = JSONRPCResponseManager.handle(
         request.data, dispatcher)
     return app.response_class(
