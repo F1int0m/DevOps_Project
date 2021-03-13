@@ -1,18 +1,23 @@
 from jsonrpc import JSONRPCResponseManager, dispatcher
-from flask import Flask, request, Blueprint
+from flask import Flask, request, Blueprint, render_template
+from . import db
 
-# from . import db
 main = Blueprint('main', __name__)
+
+
+@main.route('/cart')
+def cart():
+    return render_template('cart.html')
 
 
 @main.route('/profile')
 def profile():
-    return 'Profile'
+    return render_template('profile.html')
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return 'Help me'
+    return render_template('index.html')
 
 
 @main.route('/api/health', methods=['GET', 'POST'])
