@@ -19,3 +19,4 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(200))
     image_in_b64 = db.Column(db.Text)
+    ready = db.Column(db.Boolean)
