@@ -2,7 +2,13 @@
 
 {% block content %}
 <h1 class="title">
-  Hi {{ name }}!
-  It's ur profile, dude.
+    Hi {{ name }}!
+    It's ur profile, dude.
+
+
+
 </h1>
+{% if admin_flag %}
+    <b>Wow, u re admin, bro</b>
+    {% endif %}
 {% endblock %}
