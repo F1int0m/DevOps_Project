@@ -34,4 +34,6 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    from .items_catalog import catalog_app as catalog_blueprint
+    app.register_blueprint(catalog_blueprint)
     return app

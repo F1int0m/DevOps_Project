@@ -11,6 +11,9 @@
         <th>Item name</th>
         <th>Item description</th>
         <th>Price</th>
+        {% if flag %}
+        <th>Available</th>
+        {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -21,6 +24,12 @@
         <th>{{ item.name }}</th>
         <th>{{ item.description }}</th>
         <th>{{ item.price }}</th>
+        {% if flag%}
+        <th>{{ item.is_ready }}</th>
+        {% endif %}
+        <th>
+            <input class="button" type="submit" value="Buy">
+        </th>
     </tr>
     {% endfor %}
 

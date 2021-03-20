@@ -6,12 +6,6 @@ from . import db, models
 main = Blueprint('main', __name__)
 
 
-@main.route('/cart')
-def cart():
-    if not current_user.is_authenticated:
-        return redirect(url_for('auth.login'))
-    items = models.User.query.filter_by(id=current_user.id).first().cart
-    return render_template('cart.html', items=items)
 
 
 @main.route('/profile')
@@ -48,15 +42,4 @@ def application():
     )
 
 
-@main.route('/catalog')
-def catalog():
-    items = models.Item.query.filter_by(is_ready=True).all()
-    return render_template('catalog.html', items=items)
 
-
-@main.route('/secretCatalog')
-def secretCatalog():
-    if not current_user.is_admin:
-        return redirect(url_for('main.index'))
-    items = models.Item.query.all()
-    return render_template('catalog.html', items=items)

@@ -22,7 +22,7 @@
                         <a href="{{ url_for('main.index') }}" class="navbar-item">
                             Home
                         </a>
-                        <a href="{{ url_for('main.catalog') }}" class="navbar-item">
+                        <a href="{{ url_for('catalog.catalog') }}" class="navbar-item">
                             Catalog
                         </a>
                         {% if current_user.is_authenticated %}
@@ -30,7 +30,7 @@
                             Profile
                         </a>
                         {% endif %}
-                        <a href="{{ url_for('main.cart') }}" class="navbar-item">
+                        <a href="{{ url_for('catalog.cart') }}" class="navbar-item">
                             Cart
                         </a>
                         {% if not current_user.is_authenticated %}
