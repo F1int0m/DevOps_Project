@@ -13,13 +13,13 @@ def cart():
     return render_template('cart.html', items=items)
 
 
-@catalog_app.route('/catalog')
+@catalog_app.route('/catalog', methods=['GET', 'POST']  )
 def catalog():
     items = models.Item.query.filter_by(is_ready=True).all()
     return render_template('catalog.html', items=items, flag=False)
 
 
-@catalog_app.route('/secretCatalog')
+@catalog_app.route('/secretCatalog', methods=['GET', 'POST'])
 def secretCatalog():
     if not current_user.is_admin:
         return redirect(url_for('main.index'))
