@@ -4,16 +4,18 @@
 <h1 class="title">
     Catalog
 </h1>
-<table class="table">
+<table class="table is-striped is-hoverable">
     <thead>
     <tr>
         <th>Item id</th>
         <th>Item name</th>
         <th>Item description</th>
         <th>Price</th>
-        <th>Count to buy</th>
-        {% if flag %}
+        {% if user.is_authenticated %}
+        {% if user.is_admin %}
         <th>Available</th>
+        {% endif %}
+        <th>Count to buy</th>
         {% endif %}
     </tr>
     </thead>
@@ -21,17 +23,19 @@
 
     {% for item in items %}
     <tr id="row_id_{{item.id}}">
-        <th>{{ item.id }}</th>
-        <th>{{ item.name }}</th>
-        <th>{{ item.description }}</th>
-        <th>{{ item.price }}</th>
-        <th><input id="count_id_{{ item.id }}" class="input is-rounded" type="text" placeholder="Count" value="1"></th>
-        {% if flag%}
-        <th>{{ item.is_ready }}</th>
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.price }}</td>
+        {% if user.is_admin%}
+        <td>{{ item.is_ready }}</td>
         {% endif %}
-        <th>
-            <input onclick="add_to_cart({{ item.id }})" class="button" type="submit" value="Buy">
-        </th>
+        {% if user.is_authenticated%}
+        <td><input id="count_id_{{ item.id }}" class="input is-rounded" type="text" placeholder="Count" value="1"></td>
+        <td>
+            <input onclick="add_to_cart({{ item.id }})" class="button is-link" type="submit" value="Buy">
+        </td>
+        {% endif %}
     </tr>
     {% endfor %}
 

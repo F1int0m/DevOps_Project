@@ -20,8 +20,5 @@ async function add_to_cart(id){
               body: JSON.stringify(payload)
             });
         console.log(response.json)
-
-        
-
 	}
 }
