@@ -8,3 +8,11 @@ app.app_context().push()
 
 
 set flask_app=project
+
+res = db.session.execute(
+models.cart.select()
+)
+
+
+
+https://docs.sqlalchemy.org/en/14/tutorial/data.html

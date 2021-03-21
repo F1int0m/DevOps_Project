@@ -11,16 +11,18 @@
         <th>Item name</th>
         <th>Item description</th>
         <th>Price</th>
+        <th>Count</th>
     </tr>
     </thead>
     <tbody>
 
     {% for item in items %}
     <tr>
-        <th>{{ item.id }}</th>
-        <th>{{ item.name }}</th>
-        <th>{{ item.description }}</th>
-        <th>{{ item.price }}</th>
+        <th>{{ item.Item.id}}</th>
+        <th>{{ item.Item.name }}</th>
+        <th>{{ item.Item.description }}</th>
+        <th>{{ item.Item.price }}</th>
+        <th>{{ item.count }}</th>
     </tr>
     {% endfor %}
 

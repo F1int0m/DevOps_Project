@@ -11,6 +11,7 @@
         <th>Item name</th>
         <th>Item description</th>
         <th>Price</th>
+        <th>Count to buy</th>
         {% if flag %}
         <th>Available</th>
         {% endif %}
@@ -19,20 +20,22 @@
     <tbody>
 
     {% for item in items %}
-    <tr>
+    <tr id="row_id_{{item.id}}">
         <th>{{ item.id }}</th>
         <th>{{ item.name }}</th>
         <th>{{ item.description }}</th>
         <th>{{ item.price }}</th>
+        <th><input id="count_id_{{ item.id }}" class="input is-rounded" type="text" placeholder="Count" value="1"></th>
         {% if flag%}
         <th>{{ item.is_ready }}</th>
         {% endif %}
         <th>
-            <input class="button" type="submit" value="Buy">
+            <input onclick="add_to_cart({{ item.id }})" class="button" type="submit" value="Buy">
         </th>
     </tr>
     {% endfor %}
 
     </tbody>
 </table>
+<script src="{{ url_for('static', filename='new2.js') }}"></script>
 {% endblock %}

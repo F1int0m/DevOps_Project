@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import current_user
+from jsonrpc import dispatcher
+from .models import Item, User, Cart
 from . import db, models
 
 catalog_app = Blueprint('catalog', __name__)
@@ -9,13 +11,14 @@ catalog_app = Blueprint('catalog', __name__)
 def cart():
     if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
-    items = models.User.query.filter_by(id=current_user.id).first().cart
+    items = db.session.query(Item, Cart).filter(Item.id == Cart.c.item_id).filter(
+        Cart.c.user_id == current_user.id)
     return render_template('cart.html', items=items)
 
 
-@catalog_app.route('/catalog', methods=['GET', 'POST']  )
+@catalog_app.route('/catalog', methods=['GET', 'POST'])
 def catalog():
-    items = models.Item.query.filter_by(is_ready=True).all()
+    items = Item.query.filter_by(is_ready=True).all()
     return render_template('catalog.html', items=items, flag=False)
 
 
@@ -23,5 +26,29 @@ def catalog():
 def secretCatalog():
     if not current_user.is_admin:
         return redirect(url_for('main.index'))
-    items = models.Item.query.all()
+    items = Item.query.all()
     return render_template('catalog.html', items=items, flag=True)
+
+
+@dispatcher.add_method
+def add_to_cart(item_id, count):
+    try:
+        checked_count = int(count)
+    except:
+        return 'Not int in count'
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+
+    res = db.session.query(Cart).filter(Cart.c.item_id == item_id) \
+        .filter(Cart.c.user_id == current_user.id).first()
+    if res is None:
+        ins = Cart.insert().values(user_id=current_user.id, item_id=item_id, count=checked_count)
+        db.engine.execute(ins)
+    else:
+        stmt = Cart.update(). \
+            values(count=(Cart.c.count + checked_count)). \
+            where(Cart.c.item_id == item_id). \
+            where(Cart.c.user_id == current_user.id)
+        db.engine.execute(stmt)
+
+    return 'OK'

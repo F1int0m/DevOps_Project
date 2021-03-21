@@ -1,11 +1,9 @@
 from jsonrpc import JSONRPCResponseManager, dispatcher
 from flask import Flask, request, Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
-from . import db, models
+
 
 main = Blueprint('main', __name__)
-
-
 
 
 @main.route('/profile')
@@ -40,6 +38,3 @@ def application():
         response=response.json,
         status=200
     )
-
-
-

@@ -12,6 +12,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     app.config['FLASK_ENV'] = 'development'
     app.config['FLASK_APP'] = 'project'
+    app.config['SERVER_NAME'] = '127.0.0.1:8000'
 
     db.init_app(app)
 
@@ -19,7 +20,7 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    from .models import User, Item, cart, AdminView
+    from .models import User, Item, Cart, AdminView
     admin = Admin(app)
     admin.add_view(AdminView(User, db.session))
     admin.add_view(AdminView(Item, db.session))
