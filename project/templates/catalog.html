@@ -7,7 +7,6 @@
 <table class="table is-striped is-hoverable">
     <thead>
     <tr>
-        <th>Item id</th>
         <th>Item name</th>
         <th>Item description</th>
         <th>Price</th>
@@ -23,7 +22,6 @@
 
     {% for item in items %}
     <tr id="row_id_{{item.id}}">
-        <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.description }}</td>
         <td>{{ item.price }}</td>
@@ -33,7 +31,7 @@
         {% if user.is_authenticated%}
         <td><input id="count_id_{{ item.id }}" class="input is-rounded" type="text" placeholder="Count" value="1"></td>
         <td>
-            <input onclick="add_to_cart({{ item.id }})" class="button is-link" type="submit" value="Buy">
+            <input onclick="add_to_cart({{ item.id }}, document.getElementById('count_id_{{ item.id }}').value)" class="button is-link" type="submit" value="Buy">
         </td>
         {% endif %}
     </tr>
@@ -41,5 +39,5 @@
 
     </tbody>
 </table>
-<script src="{{ url_for('static', filename='new2.js') }}"></script>
+
 {% endblock %}

@@ -32,24 +32,53 @@ def secretCatalog():
 
 @dispatcher.add_method
 def add_to_cart(item_id, count):
-    try:
-        checked_count = int(count)
-    except:
-        return 'Not int in count'
+    checked_count = check_count(count)
+    checked_item_id = check_item_id(item_id)
 
-    res = db.session.query(Cart).filter(Cart.c.item_id == item_id) \
+    if type(checked_count) is not int or type(checked_item_id) is not int:
+        return f'Bad number: item_id=>{checked_item_id};count=>{checked_count}'
+
+    res = db.session.query(Cart).filter(Cart.c.item_id == checked_item_id) \
         .filter(Cart.c.user_id == current_user.id).first()
     if res is None:
-        ins = Cart.insert().values(user_id=current_user.id, item_id=item_id, count=checked_count)
+        ins = Cart.insert().values(user_id=current_user.id, item_id=checked_item_id, count=checked_count)
         db.engine.execute(ins)
     else:
         stmt = Cart.update(). \
             values(count=(Cart.c.count + checked_count)). \
-            where(Cart.c.item_id == item_id). \
+            where(Cart.c.item_id == checked_item_id). \
             where(Cart.c.user_id == current_user.id)
         db.engine.execute(stmt)
 
     return 'OK'
 
-def remove_from_cart():
+
+@dispatcher.add_method
+def remove_from_cart(item_id):
+    checked_item_id = check_item_id(item_id)
+    if type(checked_item_id) is not int:
+        return f'Bad number: item_id=>{checked_item_id}'
+    stmt = Cart.delete().where(Cart.c.item_id == checked_item_id)\
+        .where(Cart.c.user_id == current_user.id)
+    db.engine.execute(stmt)
     return 'OK'
+
+
+def check_item_id(id):
+    try:
+        item_id = int(id)
+        print(item_id)
+        if Item.query.filter_by(id=item_id).count() > 0:
+            return item_id
+        return f'Item id not found:{id}'
+    except:
+        return f'Bad item id:{id}'
+
+
+def check_count(value):
+    try:
+        count = int(value)
+        if count > 0:
+            return count
+    except:
+        return f'Bad count:{value}'

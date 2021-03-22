@@ -7,7 +7,6 @@
 <table class="table is-striped is-hoverable">
     <thead>
     <tr>
-        <th>Item id</th>
         <th>Item name</th>
         <th>Item description</th>
         <th>Price</th>
@@ -17,12 +16,14 @@
     <tbody>
 
     {% for item in items %}
-    <tr>
-        <th>{{ item.Item.id}}</th>
-        <th>{{ item.Item.name }}</th>
-        <th>{{ item.Item.description }}</th>
-        <th>{{ item.Item.price }}</th>
-        <th>{{ item.count }}</th>
+    <tr id="row_id_{{ item.Item.id }}" >
+        <td>{{ item.Item.name }}</td>
+        <td>{{ item.Item.description }}</td>
+        <td>{{ item.Item.price }}</td>
+        <td>{{ item.count }}</td>
+        <td>
+            <button class="delete is-medium" onclick="remove_from_cart({{item.Item.id}})"></button>
+        </td>
     </tr>
     {% endfor %}
 
