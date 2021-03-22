@@ -36,7 +36,7 @@ def add_to_cart(item_id, count):
     checked_item_id = check_item_id(item_id)
 
     if type(checked_count) is not int or type(checked_item_id) is not int:
-        return f'Bad number: item_id=>{checked_item_id};count=>{checked_count}'
+        return {'text':'Bad number','item_id':checked_item_id,'count':checked_count}
 
     res = db.session.query(Cart).filter(Cart.c.item_id == checked_item_id) \
         .filter(Cart.c.user_id == current_user.id).first()
@@ -57,8 +57,8 @@ def add_to_cart(item_id, count):
 def remove_from_cart(item_id):
     checked_item_id = check_item_id(item_id)
     if type(checked_item_id) is not int:
-        return f'Bad number: item_id=>{checked_item_id}'
-    stmt = Cart.delete().where(Cart.c.item_id == checked_item_id)\
+        return {'text': 'Bad Number', 'item_id': checked_item_id}
+    stmt = Cart.delete().where(Cart.c.item_id == checked_item_id) \
         .where(Cart.c.user_id == current_user.id)
     db.engine.execute(stmt)
     return 'OK'
@@ -67,12 +67,11 @@ def remove_from_cart(item_id):
 def check_item_id(id):
     try:
         item_id = int(id)
-        print(item_id)
         if Item.query.filter_by(id=item_id).count() > 0:
             return item_id
-        return f'Item id not found:{id}'
+        return {'text': 'Item not found', 'item_id': id}
     except:
-        return f'Bad item id:{id}'
+        return {'text': 'Bad id', 'item_id': id}
 
 
 def check_count(value):
@@ -81,4 +80,4 @@ def check_count(value):
         if count > 0:
             return count
     except:
-        return f'Bad count:{value}'
+        return {'text': 'Bad count', 'count': value}
