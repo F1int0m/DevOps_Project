@@ -4,16 +4,14 @@ from flask_login import LoginManager, current_user
 from flask_admin import Admin
 
 db = SQLAlchemy()
+cache = {}
 
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-    app.config['FLASK_ENV'] = 'development'
-    app.config['FLASK_APP'] = 'project'
-    app.config['SERVER_NAME'] = '127.0.0.1:8000'
-
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
     login_manager = LoginManager()
