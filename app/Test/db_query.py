@@ -1,5 +1,5 @@
-from project import db, create_app
-from project.models import User, Item, Cart
+from app import db, create_app
+from app.models import User, Item, Cart
 from werkzeug.security import generate_password_hash
 from sqlalchemy import select
 
