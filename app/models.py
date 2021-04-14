@@ -2,11 +2,13 @@ from . import db
 from flask import redirect, url_for, request
 from flask_login import UserMixin, current_user
 from flask_admin.contrib.sqla import ModelView
+import datetime
 
 Cart = db.Table('cart',
                 db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
                 db.Column('item_id', db.Integer, db.ForeignKey('item.id'), primary_key=True),
-                db.Column('count', db.Integer, default=1)
+                db.Column('count', db.Integer, default=1),
+                db.Column('last_modified', db.DateTime, default=datetime.datetime.now())
                 )
 
 
