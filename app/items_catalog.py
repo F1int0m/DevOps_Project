@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 from jsonrpc import dispatcher
 from .models import Item, User, Cart
 from . import db, models, cache
@@ -8,6 +8,7 @@ catalog_app = Blueprint('catalog', __name__)
 
 
 @catalog_app.route('/cart')
+@login_required
 def cart():
     user_id = current_user.id
 
