@@ -3,8 +3,13 @@ RUN apt-get update -y
 RUN apt-get install -y python3-pip python3-dev build-essential
 COPY . /app
 WORKDIR /app
-CMD ["virtualenv venv"]
-CMD ["source venv/bin/activate"]
+
+
+ENV FLASK_APP app
+ENV FLASK_ENV DEVELOPMENT
+ENV FLASK_RUN_PORT 8000
+ENV SECRET_KEY KEYSLOVEMONKEY
+
 RUN pip3 install -r requirements.txt
 
-CMD ["flask run"]
+RUN python3 -m flask run
