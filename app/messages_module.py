@@ -8,7 +8,7 @@ sender_email = "devops.send@gmail.com"
 password = os.getenv('password')
 
 
-def send_email(receiver_email="buguev.nikita@gmail.com", subject='test', text=' Hi! I do smth with gmail'):
+def send_email(receiver_email, subject, text):
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = sender_email
