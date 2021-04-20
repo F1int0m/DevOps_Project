@@ -6,4 +6,4 @@ COPY . .
 WORKDIR /app
 RUN pip3 install -r requirements.txt
 ENTRYPOINT ["python3"]
-CMD [ "-m", "flask", "run"]
+CMD [ "-m", "flask", "run", "-h", "0.0.0.0"]
