@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from . import db
+from .redis_queue import send_email
 
 auth = Blueprint('auth', __name__)
 
@@ -46,6 +47,12 @@ def signup_post():
 
     new_user = User(email=email, name=name, is_admin=False, password=generate_password_hash(password, method='sha256'))
 
+    text = f'''Hi,{name}! 
+Thanks for registration in my shop. Can you verify your mail by contacting me with pigeon mail?)
+
+Don't forget your password: YOUPASSWORDOK'''
+
+    send_email(email, 'Welcome!', text)
     db.session.add(new_user)
     db.session.commit()
 
