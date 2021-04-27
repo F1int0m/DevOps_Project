@@ -3,6 +3,8 @@ from flask_login import current_user, login_required
 from jsonrpc import dispatcher
 from .models import Item, User, Cart
 from . import db, models, cache
+from .redis_queue import remind_old_order
+from .order import get_cart
 
 catalog_app = Blueprint('catalog', __name__)
 
@@ -15,13 +17,7 @@ def cart():
     if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
 
-    if user_id in cache.keys() and cache[user_id] is not None:
-        return render_template('cart.html', items=cache[user_id])
-
-    items = db.session.query(Item, Cart).filter(Item.id == Cart.c.item_id).filter(
-        Cart.c.user_id == user_id).all()
-    cache[user_id] = items
-    last_modified = max([x.last_modified for x in items])
+    items = get_cart(user_id)
     return render_template('cart.html', items=items)
 
 
@@ -59,6 +55,7 @@ def add_to_cart(item_id, count):
             where(Cart.c.user_id == current_user.id)
         db.engine.execute(stmt)
     cache[current_user.id] = None
+    remind_old_order(current_user.id, get_cart(current_user.id))
     return 'OK'
 
 
