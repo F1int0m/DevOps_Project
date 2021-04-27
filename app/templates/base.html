@@ -30,7 +30,7 @@
                             Profile
                         </a>
                         {% endif %}
-                        <a href="{{ url_for('catalog.cart') }}" class="navbar-item">
+                        <a href="{{ url_for('cart.cart') }}" class="navbar-item">
                             Cart
                         </a>
                         {% if not current_user.is_authenticated %}

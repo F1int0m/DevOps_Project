@@ -9,18 +9,6 @@ from .order import get_cart
 catalog_app = Blueprint('catalog', __name__)
 
 
-@catalog_app.route('/cart')
-@login_required
-def cart():
-    user_id = current_user.id
-
-    if not current_user.is_authenticated:
-        return redirect(url_for('auth.login'))
-
-    items = get_cart(user_id)
-    return render_template('cart.html', items=items)
-
-
 @catalog_app.route('/catalog', methods=['GET', 'POST'])
 def catalog():
     items = Item.query.filter_by(is_ready=True).all()
