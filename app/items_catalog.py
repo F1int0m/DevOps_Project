@@ -1,10 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, current_app, session
 from flask_login import current_user, login_required
 from jsonrpc import dispatcher
 from .models import Item, User, Cart
 from . import db, models, cache
 from .redis_queue import remind_old_order
-from .order import get_cart
 
 catalog_app = Blueprint('catalog', __name__)
 
@@ -13,6 +12,18 @@ catalog_app = Blueprint('catalog', __name__)
 def catalog():
     items = Item.query.filter_by(is_ready=True).all()
     return render_template('catalog.html', items=items, user=current_user)
+
+
+@catalog_app.route('/cart')
+@login_required
+def cart():
+    user_id = current_user.id
+
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+
+    items = get_cart(user_id)
+    return render_template('cart.html', items=items)
 
 
 @catalog_app.route('/secretCatalog', methods=['GET', 'POST'])
@@ -56,6 +67,15 @@ def remove_from_cart(item_id):
         .where(Cart.c.user_id == current_user.id)
     db.engine.execute(stmt)
     return 'OK'
+
+@dispatcher.add_method
+def get_cart(user_id):
+    if user_id in cache.keys() and cache[user_id] is not None:
+        items = cache[user_id]
+    else:
+        items = db.session.query(Item, Cart).filter(Item.id == Cart.c.item_id).filter(Cart.c.user_id == user_id).all()
+        cache[user_id] = items
+    return items
 
 
 def check_item_id(id):

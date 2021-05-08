@@ -39,7 +39,4 @@ def create_app():
     from .items_catalog import catalog_app as catalog_blueprint
     app.register_blueprint(catalog_blueprint)
 
-    from .order import cart_app as cart_blueprint
-    app.register_blueprint(cart_blueprint)
-
     return app

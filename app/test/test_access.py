@@ -1,4 +1,4 @@
-from .test import jsonrpc_response, url, getLoggedSession
+from app.test.test import jsonrpc_response, url, getLoggedSession
 import unittest
 import requests
 
