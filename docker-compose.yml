@@ -7,6 +7,7 @@ services:
     environment:
       FLASK_ENV: development
       redis_server: redis
+      redis_port: 8001
     depends_on:
       - redis
   redis:

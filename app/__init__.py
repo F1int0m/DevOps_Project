@@ -10,7 +10,8 @@ from worker import conn
 dotenv.load_dotenv()
 
 db = SQLAlchemy()
-cache = Cache(config={'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_HOST': os.getenv('redis_server')})
+cache = Cache(config={'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_HOST': os.getenv('redis_server'),
+                      'CACHE_REDIS_PORT': os.getenv('redis_port')})
 q = Queue(connection=conn)
 
 
