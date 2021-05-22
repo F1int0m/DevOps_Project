@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from . import db
-from .redis_queue import send_email
+from app.messages_module import send_email
 
 auth = Blueprint('auth', __name__)
 

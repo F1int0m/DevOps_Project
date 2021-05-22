@@ -2,8 +2,7 @@ from rq.job import Job
 from app.messages_module import send_email as smtp_send
 import requests
 from . import q
-from app.worker import conn
-
+from worker import conn
 
 
 def send_email(receiver, subject, text):
@@ -22,5 +21,3 @@ def remind_old_order(user_id, old_cart):
     response = requests.post('http://127.0.0.1:8000' + '/api/v1/jsonrpc', json=payload)
     print(response)
 
-
-send_email('nikita.buguev@gmail.com', '123321', '321')

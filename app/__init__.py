@@ -4,7 +4,7 @@ from flask_login import LoginManager
 from flask_admin import Admin
 import os, dotenv
 from rq import Queue
-from app.worker import conn
+from worker import conn
 
 dotenv.load_dotenv()
 
@@ -19,6 +19,9 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+
+    from app.redis_queue import send_email
+    send_email('nikita.buguev@gmail.com', '123321', '321')
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
