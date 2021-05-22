@@ -1,13 +1,16 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager
 from flask_admin import Admin
 import os, dotenv
+from rq import Queue
+from app.worker import conn
 
 dotenv.load_dotenv()
 
 db = SQLAlchemy()
 cache = {}
+q = Queue(connection=conn)
 
 
 def create_app():

@@ -6,6 +6,7 @@ services:
       - "8000:8000"
     environment:
       FLASK_ENV: development
+      redis_server: redis
     depends_on:
       - redis
   redis:
