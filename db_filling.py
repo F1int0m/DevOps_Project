@@ -1,10 +1,9 @@
 from app import db, create_app
 from app.models import User, Item, Cart
 from werkzeug.security import generate_password_hash
-from sqlalchemy import select
 import os
 
-os.remove('db.sqlite')
+os.remove('app/db.sqlite')
 
 
 def createProducts():
@@ -22,16 +21,13 @@ def createProducts():
 
 
 admin = User(name='Nikita', is_admin=True, email='buguev.nikita@gmail.com',
-             password=generate_password_hash("123123", method='sha256'))
-guest = User(id=11, name='And', email='123@c.com', password=generate_password_hash('123', method='sha256'))
-
+             password=generate_password_hash(os.getenv('password'), method='sha256'))
 app = create_app()
 db.create_all(app=app)
 db.init_app(app)
 app.app_context().push()
 
 db.session.add(admin)
-db.session.add(guest)
 createProducts()
 
 ins = Cart.insert().values(user_id=11, item_id=3, count=10)
