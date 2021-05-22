@@ -2,9 +2,15 @@ from redis import Redis
 from rq import Queue
 from rq.job import Job
 from app.messages_module import send_email as smtp_send
-import requests
+import requests, os
 
-redis = Redis()
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+redis = Redis(host=os.getenv('redis_server'), port=6379)
 q = Queue(connection=redis)
 
 
