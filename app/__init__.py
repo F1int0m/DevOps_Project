@@ -21,7 +21,7 @@ def create_app():
     db.init_app(app)
 
     from app.redis_queue import send_email
-    send_email('nikita.buguev@gmail.com', '123321', '321')
+    send_email('nikita.buguev@gmail.com', os.getenv('redis_server'), '321')
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
