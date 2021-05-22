@@ -20,6 +20,7 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['FLASK_ENV'] = os.getenv('FLAS_ENV')
     db.init_app(app)
 
     cache.init_app(app)
