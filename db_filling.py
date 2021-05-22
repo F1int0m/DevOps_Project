@@ -1,5 +1,5 @@
-from app import db, create_app, cache
-from app.models import User, Item, Cart
+from app import db, create_app
+from app.models import User, Item
 from werkzeug.security import generate_password_hash
 import os
 
