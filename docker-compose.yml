@@ -5,7 +5,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      FLASK_ENV: development
+      FLASK_ENV: production
+      FLASK_APP: __init__.py
+      FLASK_RUN_PORT: 8000
       redis_server: redis
       redis_port: 8001
     depends_on:
