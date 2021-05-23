@@ -20,8 +20,8 @@ def createProducts():
         db.session.add(Item(name=item[0], description=item[1], image_in_b64=item[2], price=item[3], is_ready=item[4]))
 
 
-admin = User(name='Nikita', is_admin=True, email='buguev.nikita@gmail.com',
-             password=generate_password_hash(os.getenv('password'), method='sha256'))
+admin = User(name='B3st adm1n 4ever', is_admin=True, email=os.getenv('admin_login'),
+             password=generate_password_hash(os.getenv('admin_password'), method='sha256'))
 app = create_app()
 db.create_all(app=app)
 db.init_app(app)

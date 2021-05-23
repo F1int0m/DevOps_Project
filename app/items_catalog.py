@@ -66,10 +66,10 @@ def remove_from_cart(item_id):
     stmt = Cart.delete().where(Cart.c.item_id == checked_item_id) \
         .where(Cart.c.user_id == current_user.id)
     db.engine.execute(stmt)
+    cache.set(str(current_user.id), None)
     return 'OK'
 
 
-@dispatcher.add_method
 def get_cart(user_id):
     if cache.get(str(user_id)) is not None:
         items = cache.get(str(user_id))
