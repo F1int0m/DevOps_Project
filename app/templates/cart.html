@@ -16,7 +16,7 @@
     <tbody>
 
     {% for item in items %}
-    <tr id="row_id_{{ item.Item.id }}">
+    <tr id="row_id_{{ item.Item.id }}" >
         <td>{{ item.Item.name }}</td>
         <td>{{ item.Item.description }}</td>
         <td>{{ item.Item.price }}</td>
@@ -26,9 +26,7 @@
         </td>
     </tr>
     {% endfor %}
-    <p>amount:{{ amount }} rub</p>
-    <iframe src="https://yoomoney.ru/quickpay/button-widget?targets=bhh&default-sum=203&button-text=12&any-card-payment-type=on&button-size=m&button-color=orange&successURL=&quickpay=small&account=4100116807561603&"
-            width="184" height="36" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+
     </tbody>
 </table>
 {% endblock %}
