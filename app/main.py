@@ -2,7 +2,6 @@ from jsonrpc import JSONRPCResponseManager, dispatcher
 from flask import Flask, request, Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 
-
 main = Blueprint('main', __name__)
 
 
@@ -15,6 +14,12 @@ def profile():
 @main.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
+
+
+@main.route('/.well-known/pki-validation/FCD9C3E75062B98FB772D26D531DE97A.txt', methods=['GET', 'POST'])
+def SSL():
+    with open('FCD9C3E75062B98FB772D26D531DE97A.txt') as file:
+        return file.read()
 
 
 @main.route('/api/health', methods=['GET', 'POST'])
