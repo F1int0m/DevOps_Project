@@ -17,6 +17,9 @@ def index():
     return render_template('index.html')
 
 
+
+
+
 @main.route('/api/health', methods=['GET', 'POST'])
 def Health():
     response = Flask.response_class(
