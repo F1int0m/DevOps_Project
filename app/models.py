@@ -1,8 +1,8 @@
 from . import db
-from flask import redirect, url_for, request
+from flask import redirect, url_for, request, abort
 from flask_login import UserMixin, current_user
 from flask_admin.contrib.sqla import ModelView
-import datetime, json
+import json
 
 Cart = db.Table('cart',
                 db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
@@ -48,7 +48,12 @@ class AdminView(ModelView):
         return redirect(url_for('main.index', next=request.url))
 
     def is_accessible(self):
-        return current_user.is_admin
+        try:
+            access = current_user.is_admin
+            return access
+        except:
+            abort(403)
+
 
 
 def to_json(inst, cls):

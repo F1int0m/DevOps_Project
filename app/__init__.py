@@ -38,7 +38,11 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        try:
+            return User.query.get(int(user_id))
+        except:
+            return None
+
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
