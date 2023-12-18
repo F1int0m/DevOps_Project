@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -52,7 +54,9 @@ Thanks for registration in my shop. Can you verify your mail by contacting me wi
 
 Don't forget your password: YOUPASSWORDOK'''
 
-    send_email(email, 'Welcome!', text)
+    if os.getenv('send_email', False):
+        send_email(email, 'Welcome!', text)
+
     db.session.add(new_user)
     db.session.commit()
 

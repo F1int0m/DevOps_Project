@@ -10,8 +10,10 @@ from worker import conn
 dotenv.load_dotenv()
 
 db = SQLAlchemy()
-cache = Cache(config={'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_HOST': os.getenv('redis_server'),
-                      'CACHE_REDIS_PORT': os.getenv('redis_port')})
+cache = Cache(
+    config={'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_HOST': os.getenv('redis_server'),
+            'CACHE_REDIS_PORT': os.getenv('redis_port')}
+)
 q = Queue(connection=conn)
 
 
@@ -31,7 +33,7 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    from .models import User, Item, Cart, AdminView
+    from .models import User, Item, AdminView
     admin = Admin(app)
     admin.add_view(AdminView(User, db.session))
     admin.add_view(AdminView(Item, db.session))
@@ -42,7 +44,6 @@ def create_app():
             return User.query.get(int(user_id))
         except:
             return None
-
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
