@@ -2,19 +2,11 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_admin import Admin
-from flask_caching import Cache
 import os, dotenv
-from rq import Queue
-from worker import conn
 
 dotenv.load_dotenv()
 
 db = SQLAlchemy()
-cache = Cache(
-    config={'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_HOST': os.getenv('redis_server'),
-            'CACHE_REDIS_PORT': os.getenv('redis_port')}
-)
-q = Queue(connection=conn)
 
 
 def create_app():
@@ -24,10 +16,6 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['FLASK_ENV'] = os.getenv('FLAS_ENV')
     db.init_app(app)
-
-    cache.init_app(app)
-
-    from app.redis_queue import send_email
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

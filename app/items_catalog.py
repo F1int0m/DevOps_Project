@@ -2,8 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import current_user, login_required
 from jsonrpc import dispatcher
 from .models import Item, Cart
-from . import db, cache
-from .redis_queue import remind_old_order
+from . import db
 
 catalog_app = Blueprint('catalog', __name__)
 
@@ -53,7 +52,6 @@ def add_to_cart(item_id, count):
             where(Cart.c.item_id == checked_item_id). \
             where(Cart.c.user_id == current_user.id)
         db.engine.execute(stmt)
-    cache.set(str(current_user.id), None)
     remind_old_order(current_user.id, get_cart(current_user.id))
     return 'OK'
 
@@ -66,16 +64,11 @@ def remove_from_cart(item_id):
     stmt = Cart.delete().where(Cart.c.item_id == checked_item_id) \
         .where(Cart.c.user_id == current_user.id)
     db.engine.execute(stmt)
-    cache.set(str(current_user.id), None)
     return 'OK'
 
 
 def get_cart(user_id):
-    if cache.get(str(user_id)) is not None:
-        items = cache.get(str(user_id))
-    else:
-        items = db.session.query(Item, Cart).filter(Item.id == Cart.c.item_id).filter(Cart.c.user_id == user_id).all()
-        cache.set(str(user_id), items)
+    items = db.session.query(Item, Cart).filter(Item.id == Cart.c.item_id).filter(Cart.c.user_id == user_id).all()
     return items
 
 

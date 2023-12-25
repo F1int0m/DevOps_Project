@@ -12,11 +12,7 @@
     pip install -r requirements.txt
     ```
     
-3.  ```commandline
-    docker-compose up -d redis
-    ```
-    
-4.  ```commandline
+3. ```commandline
     flask run
     ```
 
